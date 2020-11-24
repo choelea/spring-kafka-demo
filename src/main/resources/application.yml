@@ -1,0 +1,25 @@
+server:
+  port: 9012
+  servlet:
+    context-path: /${spring.application.name}
+spring:
+  application:
+    name: spring-kafka-demo
+  kafka:     # 指定kafka 代理地址，可以多个
+    properties:
+      sasl.mechanism: PLAIN
+      security.protocol: SASL_PLAINTEXT
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="ckafka-eq1os3la#huang" password="hf123456";
+    bootstrap-servers: ckafka-eq1os3la.ap-chengdu.ckafka.tencentcloudmq.com:6001
+    consumer:
+      group-id: ${spring.application.name} # 指定默认消费者group id
+      max-poll-records: 200
+      auto-offset-reset: earliest # 最早未被消费的offset
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      batch-size: 1000 # 每次批量发送消息的数量
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
